@@ -1,6 +1,6 @@
 //go:generate packer-sdc mapstructure-to-hcl2 -type GossConfig
 
-package main
+package goss
 
 import (
 	"context"
@@ -12,9 +12,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/hcl/v2/hcldec"
-
 	"github.com/hashicorp/packer-plugin-sdk/packer"
-	"github.com/hashicorp/packer-plugin-sdk/plugin"
 	"github.com/hashicorp/packer-plugin-sdk/template/config"
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 )
@@ -98,15 +96,6 @@ var validFormatOptions = []string{"perfdata", "verbose", "pretty"}
 // Provisioner implements a packer Provisioner
 type Provisioner struct {
 	config GossConfig
-}
-
-func main() {
-	server, err := plugin.Server()
-	if err != nil {
-		panic(err)
-	}
-	server.RegisterProvisioner(new(Provisioner))
-	server.Serve()
 }
 
 func (p *Provisioner) ConfigSpec() hcldec.ObjectSpec {

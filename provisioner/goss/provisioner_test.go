@@ -1,6 +1,4 @@
-//go:generate packer-sdc mapstructure-to-hcl2 -type GossConfig
-
-package main
+package goss
 
 import (
 	"reflect"
@@ -27,7 +25,6 @@ func fakeContext() interpolate.Context {
 }
 
 func TestProvisioner_Prepare(t *testing.T) {
-
 	var tests = []struct {
 		name       string
 		input      []interface{}
@@ -38,7 +35,7 @@ func TestProvisioner_Prepare(t *testing.T) {
 			name: "defaults",
 			input: []interface{}{
 				map[string]interface{}{
-					"tests": []string{"example/goss"},
+					"tests": []string{"fixtures/goss"},
 				},
 			},
 			wantErr: false,
@@ -52,7 +49,7 @@ func TestProvisioner_Prepare(t *testing.T) {
 				SkipInstall:   false,
 				Inspect:       false,
 				TargetOs:      "Linux",
-				Tests:         []string{"example/goss"},
+				Tests:         []string{"fixtures/goss"},
 				RetryTimeout:  "",
 				Sleep:         "",
 				UseSudo:       false,
@@ -72,7 +69,7 @@ func TestProvisioner_Prepare(t *testing.T) {
 			name: "Windows",
 			input: []interface{}{
 				map[string]interface{}{
-					"tests":     []string{"example/goss"},
+					"tests":     []string{"fixtures/goss"},
 					"target_os": "Windows",
 					"vars_env": map[string]string{
 						"GOSS_USE_ALPHA": "1",
@@ -90,7 +87,7 @@ func TestProvisioner_Prepare(t *testing.T) {
 				SkipInstall:  false,
 				Inspect:      false,
 				TargetOs:     "Windows",
-				Tests:        []string{"example/goss"},
+				Tests:        []string{"fixtures/goss"},
 				RetryTimeout: "",
 				Sleep:        "",
 				UseSudo:      false,
@@ -112,7 +109,7 @@ func TestProvisioner_Prepare(t *testing.T) {
 			name: "Windows non alpha",
 			input: []interface{}{
 				map[string]interface{}{
-					"tests":     []string{"example/goss"},
+					"tests":     []string{"fixtures/goss"},
 					"target_os": "Windows",
 				},
 			},
@@ -127,7 +124,7 @@ func TestProvisioner_Prepare(t *testing.T) {
 				SkipInstall:   false,
 				Inspect:       false,
 				TargetOs:      "Windows",
-				Tests:         []string{"example/goss"},
+				Tests:         []string{"fixtures/goss"},
 				RetryTimeout:  "",
 				Sleep:         "",
 				UseSudo:       false,
@@ -167,7 +164,6 @@ func TestProvisioner_Prepare(t *testing.T) {
 }
 
 func TestProvisioner_envVars(t *testing.T) {
-
 	tests := []struct {
 		name   string
 		config GossConfig
